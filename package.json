@@ -1,5 +1,5 @@
 {
-  "name": "olx-cli",
+  "name": "@ibm-skills-network/olx-cli",
   "description": "A command line tool for Open Learning XML",
   "version": "0.1.0-alpha.1",
   "author": "Michael Lin <michael.lin1@ibm.com>",

@@ -15,11 +15,11 @@ A command line tool for Open Learning XML
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g olx-cli
+$ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-olx-cli/0.1.0-alpha.1 darwin-x64 node-v14.16.1
+@ibm-skills-network/olx-cli/0.1.0-alpha.1 darwin-x64 node-v14.16.1
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
