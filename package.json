@@ -1,0 +1,52 @@
+{
+  "name": "olx-cli",
+  "description": "A command line tool for Open Learning XML",
+  "version": "0.1.0",
+  "author": "Michael Lin <michael.lin1@ibm.com>",
+  "bin": {
+    "olx-cli": "./bin/run"
+  },
+  "bugs": "https://github.com/ibm-skills-network/olx-cli/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^3",
+    "glob": "^7.1.6",
+    "tar": "^6.1.0",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "globby": "^10",
+    "prettier": "^2.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "homepage": "https://github.com/ibm-skills-network/olx-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "olx-cli",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "ibm-skills-network/olx-cli",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "oclif-dev manifest && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  }
+}
