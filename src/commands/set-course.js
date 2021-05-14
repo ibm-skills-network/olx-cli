@@ -11,7 +11,7 @@ class SetCourseCommand extends Command {
         .join(", ")}`
     );
     Object.assign(this.oxl, flags);
-    this.oxl.save();
+    this.oxl.save(flags.out);
     this.oxl.cleanup();
   }
 
@@ -39,6 +39,7 @@ SetCourseCommand.examples = [
 ];
 
 SetCourseCommand.flags = {
+  out: flags.string({description: "path to output archive" }),
   name: flags.string({ description: "course name" }),
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),

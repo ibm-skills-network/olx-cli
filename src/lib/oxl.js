@@ -101,6 +101,9 @@ class OXL {
    * Persist the change
    */
   save(dest = null) {
+    if (dest) {
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+    }
     tar.create(
       {
         gzip: true,
