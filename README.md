@@ -4,9 +4,9 @@ olx-cli
 A command line tool for Open Learning XML
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/olx-cli.svg)](https://npmjs.org/package/olx-cli)
-[![Downloads/week](https://img.shields.io/npm/dw/olx-cli.svg)](https://npmjs.org/package/olx-cli)
-[![License](https://img.shields.io/npm/l/olx-cli.svg)](https://github.com/ibm-skills-network/olx-cli/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/@ibm-skills-network/olx-cli.svg)](https://npmjs.org/package/@ibm-skills-network/olx-cli)
+[![Downloads/week](https://img.shields.io/npm/dw/@ibm-skills-network/olx-cli.svg)](https://npmjs.org/package/@ibm-skills-network/olx-cli)
+[![License](https://img.shields.io/npm/l/@ibm-skills-network/olx-cli.svg)](https://github.com/ibm-skills-network/olx-cli/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
