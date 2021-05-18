@@ -97,6 +97,44 @@ class OXL {
     fs.writeFileSync(shortDescriptionHtmlPath, value);
   }
 
+  enablLti() {
+    const policyJson = this._readPolicyJson();
+    const policyXml = this._readPolicyXml();
+
+    if (
+      !policyJson[
+        `course/${this.courseXml.url_name}`
+      ].advanced_modules.includes("lti_consumer")
+    ) {
+      policyJson[`course/${this.courseXml.url_name}`].advanced_modules.push(
+        "lti_consumer"
+      );
+    }
+    if (
+      !policyXml.elements[0].attributes.advanced_modules.includes(
+        "lti_consumer"
+      )
+    ) {
+      policyXml.elements[0].attributes.advanced_modules.push("lti_consumer");
+    }
+
+    this._writePolicyJson(policyJson);
+    this._writePolicyXml(policyXml);
+  }
+
+  set ltiPassport(value) {
+    const policyJson = this._readPolicyJson();
+    const policyXml = this._readPolicyXml();
+
+    policyJson[`course/${this.courseXml.url_name}`].lti_passports = [
+      `sn_lti:${value}`,
+    ];
+    policyXml.elements[0].attributes.lti_passports = [`sn_lti:${value}`];
+
+    this._writePolicyJson(policyJson);
+    this._writePolicyXml(policyXml);
+  }
+
   /**
    * Persist the change
    */
@@ -128,6 +166,41 @@ class OXL {
     );
     const courseXmlFile = xml.xml2js(courseXmlFileRawContent);
     this.courseXml = courseXmlFile.elements[0].attributes;
+  }
+
+  _readPolicyXml() {
+    const policyXmlRawContent = fs.readFileSync(this.policyXmlPath);
+    return xml.xml2js(policyXmlRawContent);
+  }
+
+  _readPolicyJson() {
+    const policyJsonRawContent = fs.readFileSync(this.policyJsonPath);
+    return JSON.parse(policyJsonRawContent);
+  }
+
+  _writePolicyXml(content) {
+    fs.writeFileSync(this.policyXmlPath, xml.js2xml(content));
+  }
+
+  _writePolicyJson(content) {
+    fs.writeFileSync(this.policyJsonPath, JSON.stringify(content, null, 4));
+  }
+
+  get policyXmlPath() {
+    return path.join(
+      this.extracedContentRoot,
+      "course",
+      `${this.courseXml.url_name}.xml`
+    );
+  }
+
+  get policyJsonPath() {
+    return path.join(
+      this.extracedContentRoot,
+      "policies",
+      this.courseXml.url_name,
+      "policy.json"
+    );
   }
 }
 

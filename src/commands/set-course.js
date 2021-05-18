@@ -11,12 +11,15 @@ class SetCourseCommand extends Command {
         .join(", ")}`
     );
     Object.assign(this.oxl, flags);
+    if (flags.lti) this.oxl.enablLti();
     this.oxl.save(flags.out);
     this.oxl.cleanup();
   }
 
   async catch(error) {
-    this.oxl.cleanup();
+    if (this.oxl) {
+      this.oxl.cleanup();
+    }
     throw error;
   }
 }
@@ -39,10 +42,16 @@ SetCourseCommand.examples = [
 ];
 
 SetCourseCommand.flags = {
-  out: flags.string({description: "path to output archive" }),
+  out: flags.string({ description: "path to output archive" }),
   name: flags.string({ description: "course name" }),
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),
+  lti: flags.boolean({ description: "enable lti_consumer module" }),
+  ltiPassport: flags.string({
+    description:
+      "lti consumer key and secret pair, no speical character is allowed. e.g, consumer_key:consumer_secret",
+    dependsOn: ["lti"],
+  }),
 };
 
 module.exports = SetCourseCommand;
