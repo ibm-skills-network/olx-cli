@@ -13,8 +13,7 @@ class SetCourseCommand extends Command {
     Object.assign(this.oxl, flags);
     if (flags.lti) this.oxl.enablLti();
     if (flags.policyXml) {
-      const content = JSON.parse(flags.policyXml)
-      this.oxl._writePolicyXml(content)
+      this.oxl._writePolicyXml(flags.policyXml, true);
     }
     this.oxl.save(flags.out);
     this.oxl.cleanup();
@@ -56,7 +55,9 @@ SetCourseCommand.flags = {
       "lti consumer key and secret pair, no speical character is allowed. e.g, consumer_key:consumer_secret",
     dependsOn: ["lti"],
   }),
-  policyXml: flags.string({ description: "valid json string to override course/<url_name>.xml" })
+  policyXml: flags.string({
+    description: "valid xml string to override course/<url_name>.xml",
+  }),
 };
 
 module.exports = SetCourseCommand;

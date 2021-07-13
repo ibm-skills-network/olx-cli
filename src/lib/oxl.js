@@ -178,8 +178,12 @@ class OXL {
     return JSON.parse(policyJsonRawContent);
   }
 
-  _writePolicyXml(content) {
-    fs.writeFileSync(this.policyXmlPath, xml.js2xml(content));
+  _writePolicyXml(content, raw = false) {
+    if (raw) {
+      fs.writeFileSync(this.policyXmlPath, content);
+    } else {
+      fs.writeFileSync(this.policyXmlPath, xml.js2xml(content));
+    }
   }
 
   _writePolicyJson(content) {
