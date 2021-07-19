@@ -3,6 +3,7 @@ const path = require("path");
 const tar = require("tar");
 const xml = require("xml-js");
 const glob = require("glob");
+const mime = require("mime-types");
 
 const CWD = "/tmp/oxl";
 
@@ -122,6 +123,35 @@ class OXL {
     this._writePolicyXml(policyXml);
   }
 
+  addStaticAsset(file) {
+    // save static asset into `static/` dir
+    const filename = path.posix.basename(file);
+    const normalized_filename = filename.replace(/[^a-zA-Z0-9-_.]/g, "_");
+    fs.copyFileSync(file, path.join(this.staticDirPath, normalized_filename));
+
+    // create a new entry in asset policy file
+    const static_asset_filename = `asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${normalized_filename}`;
+    const assetPolicy = this._readAssetPolicyJson();
+    assetPolicy[normalized_filename] = {
+      contentType: mime.lookup(normalized_filename),
+      displayname: filename,
+      filename: static_asset_filename,
+      import_path: null,
+      locked: false,
+    };
+    this._writeAssetPolicyJson(assetPolicy);
+    return normalized_filename;
+  }
+
+  set courseCard(imagePath) {
+    // save image
+    const assetName = this.addStaticAsset(imagePath);
+    // modify `course_image` attribute in `policies/<url_name>/policy.json` and point to the added image
+    const policyJson = this._readPolicyJson();
+    policyJson[`course/${this.courseXml.url_name}`]["course_image"] = assetName;
+    this._writePolicyJson(policyJson);
+  }
+
   set ltiPassport(value) {
     const policyJson = this._readPolicyJson();
     const policyXml = this._readPolicyXml();
@@ -190,6 +220,22 @@ class OXL {
     fs.writeFileSync(this.policyJsonPath, JSON.stringify(content, null, 4));
   }
 
+  _readAssetPolicyJson() {
+    const assetPolicyJsonRawContent = fs.readFileSync(this.assetPolicyJsonPath);
+    return JSON.parse(assetPolicyJsonRawContent);
+  }
+
+  _writeAssetPolicyJson(content) {
+    fs.writeFileSync(
+      this.assetPolicyJsonPath,
+      JSON.stringify(content, null, 4)
+    );
+  }
+
+  get staticDirPath() {
+    return path.join(this.extracedContentRoot, "static");
+  }
+
   get policyXmlPath() {
     return path.join(
       this.extracedContentRoot,
@@ -205,6 +251,22 @@ class OXL {
       this.courseXml.url_name,
       "policy.json"
     );
+  }
+
+  get assetPolicyJsonPath() {
+    return path.join(this.extracedContentRoot, "policies", "assets.json");
+  }
+
+  get organization() {
+    return this.courseXml.org;
+  }
+
+  get code() {
+    return this.courseXml.course;
+  }
+
+  get run() {
+    return this.courseXml.url_name;
   }
 }
 

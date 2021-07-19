@@ -58,6 +58,9 @@ SetCourseCommand.flags = {
   policyXml: flags.string({
     description: "valid xml string to override course/<url_name>.xml",
   }),
+  courseCard: flags.string({
+    description: "path to course card image file. PNG, JPG.",
+  }),
 };
 
 module.exports = SetCourseCommand;
