@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.1.0-alpha.7 darwin-x64 node-v14.17.0
+@ibm-skills-network/olx-cli/0.1.0-alpha.8 darwin-x64 node-v14.17.0
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
@@ -60,7 +60,7 @@ ARGUMENTS
   COURSEARCHIVEPATH  Path to OXL course archive
 
 OPTIONS
-  --courseCard=courseCard              path to course card image file. PNG, JPG.
+  --courseCard=courseCard              path or url to course card image file. PNG, JPG.
   --lti                                enable lti_consumer module
 
   --ltiPassport=ltiPassport            lti consumer key and secret pair, no speical character is allowed. e.g,
@@ -83,5 +83,5 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.0-alpha.7/src/commands/set-course.js)_
+_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.0-alpha.8/src/commands/set-course.js)_
 <!-- commandsstop -->
