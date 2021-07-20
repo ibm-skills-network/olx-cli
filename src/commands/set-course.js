@@ -1,10 +1,26 @@
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const stream = require("stream");
+const { PassThrough } = require("stream");
+const { promisify } = require("util");
+const pipeline = promisify(stream.pipeline);
+
 const { Command, flags } = require("@oclif/command");
+const got = require("got");
+const FileType = require("file-type");
+
 const { OXL } = require("../lib/oxl");
 
 class SetCourseCommand extends Command {
   async run() {
     const { flags, args } = this.parse(SetCourseCommand);
     this.oxl = new OXL(args.courseArchivePath);
+    if (flags.courseCard && flags.courseCard.startsWith("http")) {
+      const destPath = await downloadRemoteCourseCard(flags.courseCard);
+      console.log(`Downloaded image at ${destPath}`);
+      flags.courseCard = destPath;
+    }
     this.log(
       `Setting course attributes: ${Object.keys(flags)
         .map((each) => `${each}="${flags[each]}"`)
@@ -25,6 +41,23 @@ class SetCourseCommand extends Command {
     }
     throw error;
   }
+}
+
+async function downloadRemoteCourseCard(url) {
+  const tmpDir = path.join(
+    "/tmp",
+    crypto.randomBytes(64).toString("hex").slice(0, 24)
+  );
+  fs.mkdirSync(tmpDir, { recursive: true });
+  const downloadStream = got.stream(url).pipe(new PassThrough());
+  const fileTypeStream = await FileType.stream(downloadStream);
+  const destPath = path.join(
+    tmpDir,
+    `course_card.${fileTypeStream.fileType.ext}`
+  );
+  const writeStream = fs.createWriteStream(destPath);
+  await pipeline(fileTypeStream, writeStream);
+  return destPath;
 }
 
 SetCourseCommand.args = [
@@ -59,7 +92,7 @@ SetCourseCommand.flags = {
     description: "valid xml string to override course/<url_name>.xml",
   }),
   courseCard: flags.string({
-    description: "path to course card image file. PNG, JPG.",
+    description: "path or url to course card image file. PNG, JPG.",
   }),
 };
 

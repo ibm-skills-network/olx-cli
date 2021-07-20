@@ -11,7 +11,9 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "file-type": "^16.5.1",
     "glob": "^7.1.6",
+    "got": "^11.8.2",
     "mime-types": "^2.1.31",
     "tar": "^6.1.0",
     "xml-js": "^1.6.11"
