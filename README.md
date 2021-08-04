@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.1.0-alpha.8 darwin-x64 node-v14.17.0
+@ibm-skills-network/olx-cli/0.1.0-alpha.9 darwin-x64 node-v14.17.0
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
@@ -83,5 +83,5 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.0-alpha.8/src/commands/set-course.js)_
+_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.0-alpha.9/src/commands/set-course.js)_
 <!-- commandsstop -->
