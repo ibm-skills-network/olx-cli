@@ -4,6 +4,7 @@ const tar = require("tar");
 const xml = require("xml-js");
 const glob = require("glob");
 const mime = require("mime-types");
+const crypto = require("crypto");
 
 const CWD = "/tmp/oxl";
 
@@ -14,7 +15,12 @@ class OXL {
    */
   constructor(archivePath) {
     this.path = archivePath;
-    this.cwd = path.join(CWD, path.basename(this.path));
+    const buf = crypto.randomBytes(256);
+    this.cwd = path.join(
+      CWD,
+      buf.toString("hex").slice(0, 12),
+      path.basename(this.path)
+    );
     this.extracedContentRoot = path.join(this.cwd, "course");
     fs.mkdirSync(this.cwd, { recursive: true });
     tar.extract({
