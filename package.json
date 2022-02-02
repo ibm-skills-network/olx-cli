@@ -10,7 +10,7 @@
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
+    "@oclif/plugin-help": "^5.0.0",
     "file-type": "^16.5.1",
     "glob": "^7.1.6",
     "got": "^11.8.2",
