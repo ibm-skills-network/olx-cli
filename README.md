@@ -1,7 +1,7 @@
 olx-cli
 =======
 
-A command line tool for Open Learning XML
+A command line tool for modifying attributes and content of Open Learning XML (OLX)
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@ibm-skills-network/olx-cli.svg)](https://npmjs.org/package/@ibm-skills-network/olx-cli)
