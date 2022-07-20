@@ -17,7 +17,7 @@
     "got": "^11.8.3",
     "mime-types": "^2.1.31",
     "tar": "^6.1.0",
-    "xml-js": "^1.6.11"
+    "@ibm-skills-network/xml-js": "^1.6.11-patch.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
