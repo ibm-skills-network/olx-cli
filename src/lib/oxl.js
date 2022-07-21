@@ -63,12 +63,7 @@ class OXL {
       courseCourseUrlNameXmlPath
     );
     const courseCourseUrlNameXml = xml.xml2js(courseCourseUrlNameXmlRawContent);
-    courseCourseUrlNameXml.elements[0].attributes.display_name = value
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;");
+    courseCourseUrlNameXml.elements[0].attributes.display_name = value;
     fs.writeFileSync(
       courseCourseUrlNameXmlPath,
       xml.js2xml(courseCourseUrlNameXml)
