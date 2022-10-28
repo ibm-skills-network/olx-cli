@@ -125,6 +125,9 @@ class OXL {
   }
 
   addStaticAsset(file) {
+    if (!fs.existsSync(this.staticDirPath)) {
+      fs.mkdirSync(this.staticDirPath, { recursive: true });
+    }
     // save static asset into `static/` dir
     const filename = path.posix.basename(file);
     const normalized_filename = filename.replace(/[^a-zA-Z0-9-_.]/g, "_");
