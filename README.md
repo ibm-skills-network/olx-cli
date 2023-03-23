@@ -102,6 +102,18 @@ DESCRIPTION
 
 EXAMPLE
   $ oxl-cli list-labs archive.gz
+
+  sample (currently only supports json output):
+  [
+    {
+      url: 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CB0103EN-SkillsNetwork/labs/Module3/Lab_4_Create_Entities.md.html',
+      tool_type: 'theia'
+    },
+    {
+      url: 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CB0103EN-SkillsNetwork/labs/Module8/New-Watson-Assistant.md.html',
+      tool_type: 'instructional-lab'
+    }
+  ]
 ```
 
 _See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.6/src/commands/list-labs.js)_
