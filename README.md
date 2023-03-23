@@ -98,12 +98,12 @@ ARGUMENTS
   COURSEARCHIVEPATH  Path to OXL course archive
 
 DESCRIPTION
-  Lists all labs found in a course along with their tool types. Labs are found either thorugh lti_consumer xml blocks or iframe tags in html
+  Lists all labs found in a course along with their tool types. Labs are found either thorugh lti_consumer xml blocks or iframe tags in html. Output format: json
 
 EXAMPLE
   $ oxl-cli list-labs archive.gz
 
-  sample (currently only supports json output):
+  sample:
   [
     {
       url: 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CB0103EN-SkillsNetwork/labs/Module3/Lab_4_Create_Entities.md.html',
