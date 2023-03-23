@@ -30,6 +30,7 @@ USAGE
 <!-- commands -->
 * [`olx-cli help [COMMAND]`](#olx-cli-help-command)
 * [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
+* [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
@@ -83,5 +84,26 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.5/src/commands/set-course.js)_
+_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.6/src/commands/set-course.js)_
+
+## `olx-cli list-labs COURSEARCHIVEPATH`
+
+List labs attributes
+
+```
+USAGE
+  $ olx-cli list-labs COURSEARCHIVEPATH
+
+ARGUMENTS
+  COURSEARCHIVEPATH  Path to OXL course archive
+
+DESCRIPTION
+  Lists all labs found in a course along with their tool types. Labs are found either thorugh lti_consumer xml blocks or iframe tags in html
+
+EXAMPLE
+  $ oxl-cli list-labs archive.gz
+```
+
+_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.6/src/commands/list-labs.js)_
+
 <!-- commandsstop -->
