@@ -5,6 +5,7 @@ const xml = require("@ibm-skills-network/xml-js");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
+const cheerio = require('cheerio');
 
 const CWD = "/tmp/oxl";
 
@@ -42,6 +43,67 @@ class OXL {
       return xml.xml2js(rawContent);
     });
     return verticalList;
+  }
+
+  get htmls() {
+    const htmlDir = path.join(this.extracedContentRoot, "html");
+    const htmlPathList = glob.sync(`${htmlDir}/**.html`);
+    const htmlList = htmlPathList.map((each) => {
+      const content = fs.readFileSync(each, 'utf8');
+      return content
+    });
+    return htmlList;
+  }
+
+  /**
+   * Get all Labs mapped to their tool types
+   */
+  get labs() {
+    const verticalList = this.verticals;
+    const htmlList = this.htmls;
+    let labs = [];
+
+    function findLtiLabs(elements) {
+      elements.forEach(e => {
+        if (e.name == "lti_consumer" && e.attributes.custom_parameters) {
+          let parsedValues = {};
+          JSON.parse(e.attributes.custom_parameters).forEach(item => {
+            // Split the item into key and value using "=" as the separator
+            const [key, value] = item.split("=");
+          
+            // Add the parsed value to the object
+            parsedValues[key] = value;
+          });
+          if (parsedValues.sn_labs_tool && parsedValues.sn_asset_library_instructions_url) {
+            labs.push({
+              url: parsedValues.sn_asset_library_instructions_url,
+              tool_type: parsedValues.sn_labs_tool
+            });
+          }
+        }
+        if (e.elements) findLtiLabs(e.elements)
+      });
+    }
+    function findInstructionalLabs(documents) {
+      const iframeUrls = [];
+      documents.forEach(doc => {
+        const $ = cheerio.load(doc);
+
+        $('iframe').each((i, iframe) => {
+          const src = $(iframe).attr('src');
+          iframeUrls.push(src);
+        });
+      });
+      iframeUrls.forEach(url => {
+        labs.push({
+          url: url,
+          tool_type: "instructional-lab"
+        }); 
+      });
+    }
+    findLtiLabs(verticalList);
+    findInstructionalLabs(htmlList)
+    return labs;
   }
 
   /**
