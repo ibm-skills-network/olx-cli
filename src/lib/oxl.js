@@ -81,10 +81,11 @@ class OXL {
                 tool_type: parsedValues.sn_labs_tool
               });
             }
-            if (parsedValues.sn_asset_library_notebook_url) {
+            if (parsedValues.sn_asset_library_notebook_url && parsedValues.sn_labs_filepath) {
               labs.push({
                 url: parsedValues.sn_asset_library_notebook_url,
-                tool_type: parsedValues.sn_labs_tool
+                tool_type: parsedValues.sn_labs_tool,
+                filepath: parsedValues.sn_labs_filepath
               });
             }
           }
