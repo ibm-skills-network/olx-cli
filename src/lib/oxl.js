@@ -74,11 +74,19 @@ class OXL {
             // Add the parsed value to the object
             parsedValues[key] = value;
           });
-          if (parsedValues.sn_labs_tool && parsedValues.sn_asset_library_instructions_url) {
-            labs.push({
-              url: parsedValues.sn_asset_library_instructions_url,
-              tool_type: parsedValues.sn_labs_tool
-            });
+          if (parsedValues.sn_labs_tool) {
+            if (parsedValues.sn_asset_library_instructions_url) {
+              labs.push({
+                url: parsedValues.sn_asset_library_instructions_url,
+                tool_type: parsedValues.sn_labs_tool
+              });
+            }
+            if (parsedValues.sn_asset_library_notebook_url) {
+              labs.push({
+                url: parsedValues.sn_asset_library_notebook_url,
+                tool_type: parsedValues.sn_labs_tool
+              });
+            }
           }
         }
         if (e.elements) findLtiLabs(e.elements)
