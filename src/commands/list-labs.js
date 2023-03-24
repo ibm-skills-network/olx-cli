@@ -7,7 +7,7 @@ class ListLabsCommand extends Command {
     const { flags, args } = this.parse(ListLabsCommand);
     this.oxl = new OXL(args.courseArchivePath);
     let labs = this.oxl.labs;
-    console.log(labs);
+    console.log(JSON.stringify(labs));
     this.oxl.cleanup();
   }
 
