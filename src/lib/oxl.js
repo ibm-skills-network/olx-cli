@@ -59,6 +59,14 @@ class OXL {
    * Get all Labs mapped to their tool types
    */
   get labs() {
+    const tool_keys = ["sn_labs_tool", "tool"];
+    const url_keys = [
+            "sn_asset_library_instructions_url",
+            "sn_asset_library_notebook_url",
+            "url",
+            "instruction_url",
+    ];
+    const path_keys = ["sn_labs_filepath", "path"];
     const verticalList = this.verticals;
     const htmlList = this.htmls;
     let labs = [];
@@ -74,21 +82,12 @@ class OXL {
             // Add the parsed value to the object
             parsedValues[key] = value;
           });
-          if (parsedValues.sn_labs_tool) {
-            if (parsedValues.sn_asset_library_instructions_url) {
-              labs.push({
-                url: parsedValues.sn_asset_library_instructions_url,
-                tool_type: parsedValues.sn_labs_tool
-              });
-            }
-            if (parsedValues.sn_asset_library_notebook_url && parsedValues.sn_labs_filepath) {
-              labs.push({
-                url: parsedValues.sn_asset_library_notebook_url,
-                tool_type: parsedValues.sn_labs_tool,
-                filepath: parsedValues.sn_labs_filepath
-              });
-            }
-          }
+          const labObj = {
+            url: parsedValues[url_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
+            tool_type: parsedValues[tool_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
+            path: parsedValues[path_keys.find(key => Object.keys(parsedValues).includes(key))] || ''
+          };
+          labs.push(labObj);
         }
         if (e.elements) findLtiLabs(e.elements)
       });
