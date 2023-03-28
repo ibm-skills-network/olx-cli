@@ -87,7 +87,9 @@ class OXL {
             tool_type: parsedValues[tool_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
             path: parsedValues[path_keys.find(key => Object.keys(parsedValues).includes(key))] || ''
           };
-          labs.push(labObj);
+          if (labObj.url !== '' && labObj.tool_type !== '') {
+            labs.push(labObj);
+          }
         }
         if (e.elements) findLtiLabs(e.elements)
       });
