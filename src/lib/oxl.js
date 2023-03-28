@@ -66,6 +66,15 @@ class OXL {
             "url",
             "instruction_url",
     ];
+    const lti_tools_mapping = {
+      "cloud-ide": "theia",
+      "cloud-ide-kubernetes": "theiadocker",
+      "cloud-ide-openshift": "theiaopenshift",
+      "windows-server": "windows-server",
+      "rstudio": "rstudio-ide",
+      "jupyterlab": "jupyterlab",
+      "jupyterlite": "jupyterlite"
+    }
     const path_keys = ["sn_labs_filepath", "path"];
     const verticalList = this.verticals;
     const htmlList = this.htmls;
@@ -88,6 +97,9 @@ class OXL {
             path: parsedValues[path_keys.find(key => Object.keys(parsedValues).includes(key))] || ''
           };
           if (labObj.url !== '' && labObj.tool_type !== '') {
+            if (labObj.tool_type in lti_tools_mapping) {
+              labObj.tool_type = lti_tools_mapping[labObj.tool_type];
+            }
             labs.push(labObj);
           }
         }
