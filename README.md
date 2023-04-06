@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.1.6 darwin-x64 node-v16.2.0
+@ibm-skills-network/olx-cli/0.1.10 darwin-arm64 node-v18.15.0
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
@@ -29,25 +29,42 @@ USAGE
 # Commands
 <!-- commands -->
 * [`olx-cli help [COMMAND]`](#olx-cli-help-command)
-* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 * [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
+* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
-Display help for olx-cli.
+display help for olx-cli
 
 ```
 USAGE
   $ olx-cli help [COMMAND]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMAND  command to show help for
 
 OPTIONS
-  -n, --nested-commands  Include all nested commands in the output.
+  --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.18/src/commands/help.ts)_
+
+## `olx-cli list-labs COURSEARCHIVEPATH`
+
+Returns a list of all labs used in the course along with their tool types
+
+```
+USAGE
+  $ olx-cli list-labs COURSEARCHIVEPATH
+
+ARGUMENTS
+  COURSEARCHIVEPATH  Path to OXL course archive
+
+EXAMPLE
+  $ oxl-cli list-labs archive.gz
+```
+
+_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.10/src/commands/list-labs.js)_
 
 ## `olx-cli set-course COURSEARCHIVEPATH`
 
@@ -84,38 +101,5 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.6/src/commands/set-course.js)_
-
-## `olx-cli list-labs COURSEARCHIVEPATH`
-
-List labs attributes
-
-```
-USAGE
-  $ olx-cli list-labs COURSEARCHIVEPATH
-
-ARGUMENTS
-  COURSEARCHIVEPATH  Path to OXL course archive
-
-DESCRIPTION
-  Lists all labs found in a course along with their tool types. Labs are found either thorugh lti_consumer xml blocks or iframe tags in html. Output format: json
-
-EXAMPLE
-  $ oxl-cli list-labs archive.gz
-
-  sample:
-  [
-    {
-      url: 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CB0103EN-SkillsNetwork/labs/Module3/Lab_4_Create_Entities.md.html',
-      tool_type: 'theia'
-    },
-    {
-      url: 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CB0103EN-SkillsNetwork/labs/Module8/New-Watson-Assistant.md.html',
-      tool_type: 'instructional-lab'
-    }
-  ]
-```
-
-_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.6/src/commands/list-labs.js)_
-
+_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.10/src/commands/set-course.js)_
 <!-- commandsstop -->

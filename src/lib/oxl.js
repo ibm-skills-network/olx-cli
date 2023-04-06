@@ -6,6 +6,7 @@ const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
 const cheerio = require('cheerio');
+const { match } = require("assert");
 
 const CWD = "/tmp/oxl";
 
@@ -77,16 +78,32 @@ class OXL {
           let parsedValues = {};
           JSON.parse(e.attributes.custom_parameters).forEach(item => {
             // Split the item into key and value using "=" as the separator
-            const [key, value] = item.split("=");
-          
+            const index_of_equal = item.indexOf("=");
+            const key = item.slice(0, index_of_equal);
+            const value = item.slice(index_of_equal + 1);
+
             // Add the parsed value to the object
             parsedValues[key] = value;
           });
-          const labObj = {
+          let labObj = {
             url: parsedValues[url_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
             tool_type: parsedValues[tool_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
             path: parsedValues[path_keys.find(key => Object.keys(parsedValues).includes(key))] || ''
           };
+          if (parsedValues["next"]) {
+            if (labObj.url === '') {
+              let index_of_url = parsedValues["next"].indexOf("md_instructions_url=")
+              if (index_of_url !== -1) {
+                labObj.url = parsedValues["next"].substring(index_of_url + "md_instructions_url=".length)
+              }
+            }
+            if (labObj.tool_type === '') {
+              let tool_match = parsedValues["next"].match(/tools\/([^\/?]+)/)
+              if (tool_match) {
+                labObj.tool_type = tool_match[1]
+              }
+            }
+          }
           if (labObj.url !== '' && labObj.tool_type !== '') {
             labs.push(labObj);
           }
