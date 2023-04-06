@@ -104,6 +104,10 @@ class OXL {
               }
             }
           }
+          let index_of_url = labObj.url.indexOf("md_instructions_url=")
+          if (index_of_url !== -1) {
+            labObj.url = labObj.url.substring(index_of_url + "md_instructions_url=".length)
+          }
           if (labObj.url !== '' && labObj.tool_type !== '') {
             labs.push(labObj);
           }
