@@ -31,6 +31,9 @@ class SetCourseCommand extends Command {
     if (flags.policyXml) {
       this.oxl._writePolicyXml(flags.policyXml, true);
     }
+    if (flags.startDate) {
+      this.oxl.setStartDate(flags.startDate);
+    }
     this.oxl.save(flags.out);
     this.oxl.cleanup();
   }
@@ -82,6 +85,7 @@ SetCourseCommand.flags = {
   name: flags.string({ description: "course name" }),
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),
+  startDate: flags.string({ description: "course start date" }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),
   ltiPassport: flags.string({
     description:

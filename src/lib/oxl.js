@@ -129,7 +129,7 @@ class OXL {
         labs.push({
           url: url,
           tool_type: "instructional-lab"
-        }); 
+        });
       });
     }
     findLtiLabs(verticalList);
@@ -212,6 +212,17 @@ class OXL {
     ) {
       policyXml.elements[0].attributes.advanced_modules.push("lti_consumer");
     }
+
+    this._writePolicyJson(policyJson);
+    this._writePolicyXml(policyXml);
+  }
+
+  setStartDate(startDate) {
+    const policyJson = this._readPolicyJson();
+    const policyXml = this._readPolicyXml();
+
+    policyJson[`course/${this.courseXml.url_name}`].start = startDate;
+    policyXml.elements[0].attributes.start = startDate;
 
     this._writePolicyJson(policyJson);
     this._writePolicyXml(policyXml);
