@@ -94,6 +94,8 @@ OPTIONS
 
   --shortDescription=shortDescription  course short description
 
+  --startDate=startDate                course start date in ISO 8601 format
+
 DESCRIPTION
   Update course attributes of an existing course archive.
 
