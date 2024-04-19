@@ -23,7 +23,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "globby": "^10",
-    "prettier": "^2.2.1"
+    "prettier": "^3.0.0"
   },
   "engines": {
     "node": ">=14.0.0"
