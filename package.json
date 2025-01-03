@@ -9,7 +9,6 @@
   "type": "commonjs",
   "bugs": "https://github.com/ibm-skills-network/olx-cli/issues",
   "dependencies": {
-    "@ibm-skills-network/xml-js": "^1.6.11-patch.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^5.0.0",
