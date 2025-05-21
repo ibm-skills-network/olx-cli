@@ -21,8 +21,10 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
+    "@types/node": "^18",
     "globby": "^10",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "typescript": "^5.3"
   },
   "engines": {
     "node": ">=14.0.0"
