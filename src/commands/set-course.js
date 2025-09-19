@@ -86,6 +86,7 @@ SetCourseCommand.flags = {
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),
   startDate: flags.string({ description: "course start date" }),
+  minPassingGrade: flags.string({ description: "minimum passing grade as an integer" }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),
   ltiPassport: flags.string({
     description:

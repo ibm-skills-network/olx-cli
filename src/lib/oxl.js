@@ -62,10 +62,10 @@ class OXL {
   get labs() {
     const tool_keys = ["sn_labs_tool", "tool"];
     const url_keys = [
-            "sn_asset_library_instructions_url",
-            "sn_asset_library_notebook_url",
-            "url",
-            "instruction_url",
+      "sn_asset_library_instructions_url",
+      "sn_asset_library_notebook_url",
+      "url",
+      "instruction_url",
     ];
     const path_keys = ["sn_labs_filepath", "path"];
     const verticalList = this.verticals;
@@ -172,6 +172,15 @@ class OXL {
     const policyJson = JSON.parse(policyJsonRawContent);
     policyJson[`course/${this.courseXml.url_name}`].display_name = value;
     fs.writeFileSync(policyJsonPath, JSON.stringify(policyJson, null, 4));
+  }
+
+  set minPassingGrade(value) {
+    if (!Number.isInteger(value) || value < 0 || value > 100) {
+      throw new Error('minPassingGrade must be an integer between 0 and 100');
+    }
+
+    const filePath = path.join(this.extracedContentRoot, "about", "entrance_exam_minimum_score_pct.html")
+    fs.writeFileSync(filePath, value);
   }
 
   set overview(value) {

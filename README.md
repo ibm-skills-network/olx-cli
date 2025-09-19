@@ -28,9 +28,12 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`olx-cli help [COMMAND]`](#olx-cli-help-command)
-* [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
-* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
+- [olx-cli](#olx-cli)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`olx-cli help [COMMAND]`](#olx-cli-help-command)
+  - [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
+  - [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
@@ -95,6 +98,8 @@ OPTIONS
   --shortDescription=shortDescription  course short description
 
   --startDate=startDate                course start date in ISO 8601 format
+
+  --minPassingGrade=minPassingGrade    minimum passing grade for course as an int 0-100
 
 DESCRIPTION
   Update course attributes of an existing course archive.
