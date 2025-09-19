@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const tar = require("tar");
-const xml = require("../xml-js");
+const xml = require("../../xml-js");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
@@ -175,12 +175,20 @@ class OXL {
   }
 
   set minPassingGrade(value) {
-    if (!Number.isInteger(value) || value < 0 || value > 100) {
+    if (value < 0 || value > 100) {
       throw new Error('minPassingGrade must be an integer between 0 and 100');
     }
 
-    const filePath = path.join(this.extracedContentRoot, "about", "entrance_exam_minimum_score_pct.html")
-    fs.writeFileSync(filePath, value);
+    const filePath = path.join(
+      this.extracedContentRoot,
+      "policies",
+      this.courseXml.url_name,
+      "grading_policy.json"
+    )
+
+    const gradingPolicyJson = JSON.parse(fs.readFileSync(filePath));
+    gradingPolicyJson["GRADE_CUTOFFS"]["Pass"] = parseFloat(`0.${value}`);
+    fs.writeFileSync(filePath, JSON.stringify(gradingPolicyJson, null, 4));
   }
 
   set overview(value) {
