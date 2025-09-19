@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.1.12 darwin-arm64 node-v18.15.0
+@ibm-skills-network/olx-cli/0.1.13 darwin-arm64 node-v20.18.0
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
@@ -28,9 +28,12 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`olx-cli help [COMMAND]`](#olx-cli-help-command)
-* [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
-* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
+- [olx-cli](#olx-cli)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`olx-cli help [COMMAND]`](#olx-cli-help-command)
+  - [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
+  - [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
@@ -64,7 +67,7 @@ EXAMPLE
   $ oxl-cli list-labs archive.gz
 ```
 
-_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.12/src/commands/list-labs.js)_
+_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.13/src/commands/list-labs.js)_
 
 ## `olx-cli set-course COURSEARCHIVEPATH`
 
@@ -96,6 +99,8 @@ OPTIONS
 
   --startDate=startDate                course start date in ISO 8601 format
 
+  --minPassingGrade=minPassingGrade    minimum passing grade for course as an int 0-100
+
 DESCRIPTION
   Update course attributes of an existing course archive.
 
@@ -103,5 +108,5 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.12/src/commands/set-course.js)_
+_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.13/src/commands/set-course.js)_
 <!-- commandsstop -->
