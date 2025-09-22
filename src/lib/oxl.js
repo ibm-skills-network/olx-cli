@@ -1,13 +1,23 @@
 const fs = require("fs");
 const path = require("path");
 const tar = require("tar");
-const xml = require("@ibm-skills-network/xml-js");
+const { XMLParser, XMLBuilder} = require("fast-xml-parser");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
 const cheerio = require('cheerio');
 
 const CWD = "/tmp/oxl";
+
+const parser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_'
+});
+
+const builder = new XMLBuilder({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_'
+});
 
 class OXL {
   /**
@@ -40,7 +50,7 @@ class OXL {
     const verticalXmlPathList = glob.sync(`${verticalDir}/**.xml`);
     const verticalList = verticalXmlPathList.map((each) => {
       const rawContent = fs.readFileSync(each);
-      return xml.xml2js(rawContent);
+      return parser.parse(rawContent);
     });
     return verticalList;
   }
@@ -154,11 +164,12 @@ class OXL {
     const courseCourseUrlNameXmlRawContent = fs.readFileSync(
       courseCourseUrlNameXmlPath
     );
-    const courseCourseUrlNameXml = xml.xml2js(courseCourseUrlNameXmlRawContent);
-    courseCourseUrlNameXml.elements[0].attributes.display_name = value;
+    const courseCourseUrlNameXml = parser.parse(courseCourseUrlNameXmlRawContent);
+    const rootElement = Object.values(courseCourseUrlNameXml)[0];
+    rootElement['@_display_name'] = value;
     fs.writeFileSync(
       courseCourseUrlNameXmlPath,
-      xml.js2xml(courseCourseUrlNameXml)
+      builder.build(courseCourseUrlNameXml)
     );
 
     const policyJsonPath = path.join(
@@ -222,11 +233,11 @@ class OXL {
       );
     }
     if (
-      !policyXml.elements[0].attributes.advanced_modules.includes(
+      !this._getPolicyAttribute(policyXml, 'advanced_modules').includes(
         "lti_consumer"
       )
     ) {
-      policyXml.elements[0].attributes.advanced_modules.push("lti_consumer");
+      this._getPolicyAttribute(policyXml, 'advanced_modules').push("lti_consumer");
     }
 
     this._writePolicyJson(policyJson);
@@ -238,7 +249,7 @@ class OXL {
     const policyXml = this._readPolicyXml();
 
     policyJson[`course/${this.courseXml.url_name}`].start = startDate;
-    policyXml.elements[0].attributes.start = startDate;
+    this._setPolicyAttribute(policyXml, 'start', startDate);
 
     this._writePolicyJson(policyJson);
     this._writePolicyXml(policyXml);
@@ -283,7 +294,7 @@ class OXL {
     policyJson[`course/${this.courseXml.url_name}`].lti_passports = [
       `sn_lti:${value}`,
     ];
-    policyXml.elements[0].attributes.lti_passports = [`sn_lti:${value}`];
+    this._setPolicyAttribute(policyXml, 'lti_passports', [`sn_lti:${value}`]);
 
     this._writePolicyJson(policyJson);
     this._writePolicyXml(policyXml);
@@ -318,13 +329,18 @@ class OXL {
     const courseXmlFileRawContent = fs.readFileSync(
       path.join(this.extracedContentRoot, "course.xml")
     );
-    const courseXmlFile = xml.xml2js(courseXmlFileRawContent);
-    this.courseXml = courseXmlFile.elements[0].attributes;
+    const courseXmlFile = parser.parse(courseXmlFileRawContent);
+    const courseElement = courseXmlFile.course;
+    this.courseXml = {
+      org: courseElement['@_org'],
+      course: courseElement['@_course'],
+      url_name: courseElement['@_url_name']
+    };
   }
 
   _readPolicyXml() {
     const policyXmlRawContent = fs.readFileSync(this.policyXmlPath);
-    return xml.xml2js(policyXmlRawContent);
+    return parser.parse(policyXmlRawContent);
   }
 
   _readPolicyJson() {
@@ -336,7 +352,7 @@ class OXL {
     if (raw) {
       fs.writeFileSync(this.policyXmlPath, content);
     } else {
-      fs.writeFileSync(this.policyXmlPath, xml.js2xml(content));
+      fs.writeFileSync(this.policyXmlPath, builder.build(content));
     }
   }
 
@@ -391,6 +407,16 @@ class OXL {
 
   get run() {
     return this.courseXml.url_name;
+  }
+
+  _getPolicyAttribute(policyXml, attribute) {
+    const rootElement = Object.values(policyXml)[0];
+    return rootElement[`@_${attribute}`] || [];
+  }
+
+  _setPolicyAttribute(policyXml, attribute, value) {
+    const rootElement = Object.values(policyXml)[0];
+    rootElement[`@_${attribute}`] = value;
   }
 }
 

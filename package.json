@@ -9,11 +9,11 @@
   "type": "commonjs",
   "bugs": "https://github.com/ibm-skills-network/olx-cli/issues",
   "dependencies": {
-    "@ibm-skills-network/xml-js": "^1.6.12",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^5.0.0",
     "cheerio": "^1.0.0-rc.12",
+    "fast-xml-parser": "^5.2.5",
     "file-type": "^16.5.3",
     "glob": "^7.2.3",
     "got": "^11.8.3",
