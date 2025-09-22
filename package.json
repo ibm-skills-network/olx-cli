@@ -33,7 +33,8 @@
     "/bin",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "/src"
+    "/src",
+    "/xml-js"
   ],
   "homepage": "https://github.com/ibm-skills-network/olx-cli",
   "keywords": [
