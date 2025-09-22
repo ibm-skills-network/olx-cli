@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.1.13 darwin-arm64 node-v20.18.0
+@ibm-skills-network/olx-cli/0.1.14 darwin-arm64 node-v20.18.0
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
@@ -28,12 +28,9 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-- [olx-cli](#olx-cli)
-- [Usage](#usage)
-- [Commands](#commands)
-  - [`olx-cli help [COMMAND]`](#olx-cli-help-command)
-  - [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
-  - [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
+* [`olx-cli help [COMMAND]`](#olx-cli-help-command)
+* [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
+* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
@@ -67,7 +64,7 @@ EXAMPLE
   $ oxl-cli list-labs archive.gz
 ```
 
-_See code: [src/commands/list-labs.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.13/src/commands/list-labs.js)_
+_See code: [src/commands/list-labs.ts](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.14/src/commands/list-labs.ts)_
 
 ## `olx-cli set-course COURSEARCHIVEPATH`
 
@@ -87,6 +84,8 @@ OPTIONS
   --ltiPassport=ltiPassport            lti consumer key and secret pair, no speical character is allowed. e.g,
                                        consumer_key:consumer_secret
 
+  --minPassingGrade=minPassingGrade    minimum passing grade as an integer
+
   --name=name                          course name
 
   --out=out                            path to output archive
@@ -97,9 +96,7 @@ OPTIONS
 
   --shortDescription=shortDescription  course short description
 
-  --startDate=startDate                course start date in ISO 8601 format
-
-  --minPassingGrade=minPassingGrade    minimum passing grade for course as an int 0-100
+  --startDate=startDate                course start date
 
 DESCRIPTION
   Update course attributes of an existing course archive.
@@ -108,5 +105,5 @@ EXAMPLE
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
-_See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.13/src/commands/set-course.js)_
+_See code: [src/commands/set-course.ts](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.14/src/commands/set-course.ts)_
 <!-- commandsstop -->
