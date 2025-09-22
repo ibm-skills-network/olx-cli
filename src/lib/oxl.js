@@ -1,14 +1,18 @@
 const fs = require("fs");
 const path = require("path");
 const tar = require("tar");
-const xml = require("../../xml-js");
+const { XMLParser, XMLBuilder} = require("fast-xml-parser");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
 const cheerio = require('cheerio');
-const { match } = require("assert");
+
 
 const CWD = "/tmp/oxl";
+
+const parser = new XMLParser();
+
+const builder = new XMLBuilder();
 
 class OXL {
   /**
@@ -41,7 +45,7 @@ class OXL {
     const verticalXmlPathList = glob.sync(`${verticalDir}/**.xml`);
     const verticalList = verticalXmlPathList.map((each) => {
       const rawContent = fs.readFileSync(each);
-      return xml.xml2js(rawContent);
+      return parser.parse(rawContent);
     });
     return verticalList;
   }
@@ -155,11 +159,11 @@ class OXL {
     const courseCourseUrlNameXmlRawContent = fs.readFileSync(
       courseCourseUrlNameXmlPath
     );
-    const courseCourseUrlNameXml = xml.xml2js(courseCourseUrlNameXmlRawContent);
+    const courseCourseUrlNameXml = parser.parse(courseCourseUrlNameXmlRawContent);
     courseCourseUrlNameXml.elements[0].attributes.display_name = value;
     fs.writeFileSync(
       courseCourseUrlNameXmlPath,
-      xml.js2xml(courseCourseUrlNameXml)
+      builder.build(courseCourseUrlNameXml)
     );
 
     const policyJsonPath = path.join(
@@ -319,13 +323,13 @@ class OXL {
     const courseXmlFileRawContent = fs.readFileSync(
       path.join(this.extracedContentRoot, "course.xml")
     );
-    const courseXmlFile = xml.xml2js(courseXmlFileRawContent);
+    const courseXmlFile = parser.parse(courseXmlFileRawContent);
     this.courseXml = courseXmlFile.elements[0].attributes;
   }
 
   _readPolicyXml() {
     const policyXmlRawContent = fs.readFileSync(this.policyXmlPath);
-    return xml.xml2js(policyXmlRawContent);
+    return parser.parse(policyXmlRawContent);
   }
 
   _readPolicyJson() {
@@ -337,7 +341,7 @@ class OXL {
     if (raw) {
       fs.writeFileSync(this.policyXmlPath, content);
     } else {
-      fs.writeFileSync(this.policyXmlPath, xml.js2xml(content));
+      fs.writeFileSync(this.policyXmlPath, builder.build(content));
     }
   }
 
