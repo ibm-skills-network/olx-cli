@@ -19,7 +19,7 @@ $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
 running command...
 $ olx-cli (-v|--version|version)
-@ibm-skills-network/olx-cli/0.2.0 darwin-arm64 node-v20.18.0
+@ibm-skills-network/olx-cli/0.2.0 darwin-arm64 node-v20.19.5
 $ olx-cli --help [COMMAND]
 USAGE
   $ olx-cli COMMAND
