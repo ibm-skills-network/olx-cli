@@ -1,7 +1,7 @@
 {
   "name": "@ibm-skills-network/olx-cli",
   "description": "A command line tool for Open Learning XML",
-  "version": "0.1.13",
+  "version": "0.2.0",
   "author": "Skills Network <mroudnitski@ibm.com>",
   "bin": {
     "olx-cli": "./bin/run"
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
-    "@types/node": "^18",
+    "@types/node": "^20",
     "globby": "^10",
     "prettier": "^2.2.1",
     "typescript": "^5.3"
