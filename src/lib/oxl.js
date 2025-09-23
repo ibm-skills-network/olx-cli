@@ -1,12 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const tar = require("tar");
-const xml = require("../../xml-js");
+const xml = require("@ibm-skills-network/xml-js");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
 const cheerio = require('cheerio');
-const { match } = require("assert");
 
 const CWD = "/tmp/oxl";
 
