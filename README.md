@@ -50,7 +50,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.18/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.18/src/commands/help.js)_
 
 ## `olx-cli list-labs COURSEARCHIVEPATH`
 
@@ -87,6 +87,8 @@ OPTIONS
   --ltiPassport=ltiPassport            lti consumer key and secret pair, no speical character is allowed. e.g,
                                        consumer_key:consumer_secret
 
+  --minPassingGrade=minPassingGrade    minimum passing grade as an integer
+
   --name=name                          course name
 
   --out=out                            path to output archive
@@ -97,9 +99,7 @@ OPTIONS
 
   --shortDescription=shortDescription  course short description
 
-  --startDate=startDate                course start date in ISO 8601 format
-
-  --minPassingGrade=minPassingGrade    minimum passing grade for course as an int 0-100
+  --startDate=startDate                course start date
 
 DESCRIPTION
   Update course attributes of an existing course archive.
