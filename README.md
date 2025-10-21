@@ -101,6 +101,8 @@ OPTIONS
 
   --startDate=startDate                course start date
 
+  --certificate                        enable certificate
+
 DESCRIPTION
   Update course attributes of an existing course archive.
 

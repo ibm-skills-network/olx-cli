@@ -208,7 +208,7 @@ class OXL {
     fs.writeFileSync(shortDescriptionHtmlPath, value);
   }
 
-  enablLti() {
+  enableLti() {
     const policyJson = this._readPolicyJson();
     const policyXml = this._readPolicyXml();
 
@@ -227,6 +227,94 @@ class OXL {
       )
     ) {
       policyXml.elements[0].attributes.advanced_modules.push("lti_consumer");
+    }
+
+    this._writePolicyJson(policyJson);
+    this._writePolicyXml(policyXml);
+  }
+
+  toggleCertificate(status) {
+    const policyJson = this._readPolicyJson();
+    const policyXml = this._readPolicyXml();
+
+    const courseKey = `course/${this.courseXml.url_name}`;
+    const coursePolicy = policyJson[courseKey];
+
+    if (!coursePolicy) {
+      console.error(`Course ${courseKey} not found in policy.json`);
+      return;
+    }
+
+    if (!coursePolicy.certificates) {
+      coursePolicy.certificates = { certificates: [] };
+    }
+
+    const certs = coursePolicy.certificates.certificates;
+
+    if (!Array.isArray(certs) || certs.length === 0) {
+      coursePolicy.certificates.certificates = [
+        {
+          course_title: coursePolicy.display_name || "",
+          description: "Course completion certificate",
+          editing: false,
+          id: Date.now(),
+          is_active: status,
+          name: "Certificate of Completion",
+          signatories: [],
+          version: 1,
+        },
+      ];
+    } else {
+      coursePolicy.certificates.certificates = certs.map((cert) => ({
+        ...cert,
+        is_active: status,
+      }));
+    }
+
+    coursePolicy.certificates_display_behavior =
+      coursePolicy.certificates_display_behavior || "early_with_info";
+    coursePolicy.cert_html_view_enabled = status;
+
+    const xmlCourse = policyXml?.elements?.[0];
+    if (xmlCourse && xmlCourse.attributes) {
+      const attrs = xmlCourse.attributes;
+      attrs.cert_html_view_enabled = `${status}`;
+
+      if (!attrs.certificates_display_behavior) {
+        attrs.certificates_display_behavior = "early_with_info";
+      }
+
+      let xmlCerts = [];
+      try {
+        xmlCerts = attrs.certificates
+          ? JSON.parse(attrs.certificates.replace(/&quot;/g, '"')).certificates || []
+          : [];
+      } catch {
+        xmlCerts = [];
+      }
+
+      if (!Array.isArray(xmlCerts) || xmlCerts.length === 0) {
+        xmlCerts = [
+          {
+            course_title: coursePolicy.display_name || "",
+            description: "Course completion certificate",
+            editing: false,
+            id: Date.now(),
+            is_active: status,
+            name: "Certificate of Completion",
+            signatories: [],
+            version: 1,
+          },
+        ];
+      } else {
+        xmlCerts = xmlCerts.map((cert) => ({
+          ...cert,
+          is_active: status,
+        }));
+      }
+
+      const certObj = { certificates: xmlCerts };
+      attrs.certificates = JSON.stringify(certObj).replace(/"/g, "&quot;");
     }
 
     this._writePolicyJson(policyJson);

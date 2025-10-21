@@ -27,7 +27,8 @@ class SetCourseCommand extends Command {
         .join(", ")}`
     );
     Object.assign(this.oxl, flags);
-    if (flags.lti) this.oxl.enablLti();
+    if (flags.lti) this.oxl.enableLti();
+    this.oxl.toggleCertificate(flags.certificate);
     if (flags.policyXml) {
       this.oxl._writePolicyXml(flags.policyXml, true);
     }
@@ -86,7 +87,9 @@ SetCourseCommand.flags = {
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),
   startDate: flags.string({ description: "course start date" }),
-  minPassingGrade: flags.string({ description: "minimum passing grade as an integer" }),
+  minPassingGrade: flags.string({
+    description: "minimum passing grade as an integer",
+  }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),
   ltiPassport: flags.string({
     description:
@@ -98,6 +101,10 @@ SetCourseCommand.flags = {
   }),
   courseCard: flags.string({
     description: "path or url to course card image file. PNG, JPG.",
+  }),
+  certificate: flags.boolean({
+    description: "enable certificate",
+    allowNo: true,
   }),
 };
 
