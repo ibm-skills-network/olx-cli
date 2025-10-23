@@ -103,6 +103,10 @@ OPTIONS
 
   --certificate                        enable certificate
 
+  --no-certificate                     disable certificate
+
+  --addSignatory='name={},title={},organization={},signature={}' add signatories to certificate (can add multiple)
+
 DESCRIPTION
   Update course attributes of an existing course archive.
 

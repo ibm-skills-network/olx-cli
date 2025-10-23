@@ -325,7 +325,7 @@ class OXL {
     this._writePolicyXml(policyXml);
   }
 
-  addSignatoryToCertificate({ name, title, organization, signature }) {
+  addSignatoryToCertificate(signatories) {
     const policyJson = this._readPolicyJson();
     const policyXml = this._readPolicyXml();
     const courseKey = `course/${this.courseXml.url_name}`;
@@ -339,23 +339,27 @@ class OXL {
       return;
     }
 
-    let signaturePath = "";
-    if (signature) {
-      const assetName = this.addStaticAsset(signature);
-      signaturePath = `/asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${assetName}`;
-    }
+    const newSignatories = signatories.map(
+      ({ name, title, organization, signature }) => {
+        let signaturePath = "";
+        if (signature) {
+          const assetName = this.addStaticAsset(signature);
+          signaturePath = `/asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${assetName}`;
+        }
 
-    const newSignatory = {
-      certificate: null,
-      id: Date.now(),
-      name,
-      organization: organization || "",
-      signature_image_path: signaturePath,
-      title: title || "",
-    };
+        return {
+          certificate: null,
+          id: Date.now() + Math.floor(Math.random() * 1000),
+          name,
+          organization: organization || "",
+          signature_image_path: signaturePath,
+          title: title || "",
+        };
+      }
+    );
 
     coursePolicy.certificates.certificates.forEach((cert) => {
-      cert.signatories = [newSignatory];
+      cert.signatories = newSignatories;
     });
 
     const xmlCourse = policyXml?.elements?.[0];
@@ -366,7 +370,7 @@ class OXL {
         );
 
         certObj.certificates.forEach((cert) => {
-          cert.signatories = [newSignatory];
+          cert.signatories = newSignatories;
         });
 
         xmlCourse.attributes.certificates = JSON.stringify(certObj).replace(

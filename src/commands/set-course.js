@@ -48,9 +48,7 @@ class SetCourseCommand extends Command {
         return obj;
       });
 
-      for (const signatory of parsedSignatories) {
-        this.oxl.addSignatoryToCertificate(signatory);
-      }
+      this.oxl.addSignatoryToCertificate(parsedSignatories);
     }
 
     this.oxl.save(flags.out);
