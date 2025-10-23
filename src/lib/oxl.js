@@ -339,8 +339,11 @@ class OXL {
       return;
     }
 
-    const assetName = this.addStaticAsset(signature);
-    const signaturePath = `/asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${assetName}`;
+    let signaturePath = "";
+    if (signature) {
+      const assetName = this.addStaticAsset(signature);
+      signaturePath = `/asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${assetName}`;
+    }
 
     const newSignatory = {
       certificate: null,
