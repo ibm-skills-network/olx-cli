@@ -5,7 +5,7 @@ const xml = require("@ibm-skills-network/xml-js");
 const glob = require("glob");
 const mime = require("mime-types");
 const crypto = require("crypto");
-const cheerio = require('cheerio');
+const cheerio = require("cheerio");
 
 const CWD = "/tmp/oxl";
 
@@ -49,8 +49,8 @@ class OXL {
     const htmlDir = path.join(this.extracedContentRoot, "html");
     const htmlPathList = glob.sync(`${htmlDir}/**.html`);
     const htmlList = htmlPathList.map((each) => {
-      const content = fs.readFileSync(each, 'utf8');
-      return content
+      const content = fs.readFileSync(each, "utf8");
+      return content;
     });
     return htmlList;
   }
@@ -72,10 +72,10 @@ class OXL {
     let labs = [];
 
     function findLtiLabs(elements) {
-      elements.forEach(e => {
+      elements.forEach((e) => {
         if (e.name == "lti_consumer" && e.attributes.custom_parameters) {
           let parsedValues = {};
-          JSON.parse(e.attributes.custom_parameters).forEach(item => {
+          JSON.parse(e.attributes.custom_parameters).forEach((item) => {
             // Split the item into key and value using "=" as the separator
             const index_of_equal = item.indexOf("=");
             const key = item.slice(0, index_of_equal);
@@ -85,54 +85,69 @@ class OXL {
             parsedValues[key] = value;
           });
           let labObj = {
-            url: parsedValues[url_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
-            tool_type: parsedValues[tool_keys.find(key => Object.keys(parsedValues).includes(key))] || '',
-            path: parsedValues[path_keys.find(key => Object.keys(parsedValues).includes(key))] || ''
+            url:
+              parsedValues[
+                url_keys.find((key) => Object.keys(parsedValues).includes(key))
+              ] || "",
+            tool_type:
+              parsedValues[
+                tool_keys.find((key) => Object.keys(parsedValues).includes(key))
+              ] || "",
+            path:
+              parsedValues[
+                path_keys.find((key) => Object.keys(parsedValues).includes(key))
+              ] || "",
           };
           if (parsedValues["next"]) {
-            if (labObj.url === '') {
-              let index_of_url = parsedValues["next"].indexOf("md_instructions_url=")
+            if (labObj.url === "") {
+              let index_of_url = parsedValues["next"].indexOf(
+                "md_instructions_url="
+              );
               if (index_of_url !== -1) {
-                labObj.url = parsedValues["next"].substring(index_of_url + "md_instructions_url=".length)
+                labObj.url = parsedValues["next"].substring(
+                  index_of_url + "md_instructions_url=".length
+                );
               }
             }
-            if (labObj.tool_type === '') {
-              let tool_match = parsedValues["next"].match(/tools\/([^\/?]+)/)
+            if (labObj.tool_type === "") {
+              let tool_match = parsedValues["next"].match(/tools\/([^\/?]+)/);
               if (tool_match) {
-                labObj.tool_type = tool_match[1]
+                labObj.tool_type = tool_match[1];
               }
             }
           }
-          let index_of_url = labObj.url.indexOf("md_instructions_url=")
+          let index_of_url = labObj.url.indexOf("md_instructions_url=");
           if (index_of_url !== -1) {
-            labObj.url = labObj.url.substring(index_of_url + "md_instructions_url=".length)
+            labObj.url = labObj.url.substring(
+              index_of_url + "md_instructions_url=".length
+            );
           }
-          if (labObj.url !== '' && labObj.tool_type !== '') {
+          if (labObj.url !== "" && labObj.tool_type !== "") {
             labs.push(labObj);
           }
         }
-        if (e.elements) findLtiLabs(e.elements)
+        if (e.elements) findLtiLabs(e.elements);
       });
     }
     function findInstructionalLabs(documents) {
       const iframeUrls = [];
-      documents.forEach(doc => {
+      documents.forEach((doc) => {
         const $ = cheerio.load(doc);
 
-        $('iframe').each((i, iframe) => {
-          const src = $(iframe).attr('src');
+        $("iframe").each((i, iframe) => {
+          const src = $(iframe).attr("src");
           iframeUrls.push(src);
         });
       });
-      iframeUrls.forEach(url => {
+      iframeUrls.forEach((url) => {
         labs.push({
           url: url,
-          tool_type: "instructional-lab"
+          tool_type: "instructional-lab",
         });
       });
     }
     findLtiLabs(verticalList);
-    findInstructionalLabs(htmlList)
+    findInstructionalLabs(htmlList);
     return labs;
   }
 
@@ -175,7 +190,7 @@ class OXL {
 
   set minPassingGrade(value) {
     if (value < 0 || value > 100) {
-      throw new Error('minPassingGrade must be an integer between 0 and 100');
+      throw new Error("minPassingGrade must be an integer between 0 and 100");
     }
 
     const filePath = path.join(
@@ -183,7 +198,7 @@ class OXL {
       "policies",
       this.courseXml.url_name,
       "grading_policy.json"
-    )
+    );
 
     const gradingPolicyJson = JSON.parse(fs.readFileSync(filePath));
     gradingPolicyJson["GRADE_CUTOFFS"]["Pass"] = parseFloat(`0.${value}`);
@@ -241,8 +256,7 @@ class OXL {
     const coursePolicy = policyJson[courseKey];
 
     if (!coursePolicy) {
-      console.error(`Course ${courseKey} not found in policy.json`);
-      return;
+      throw new Error(`Course ${courseKey} not found in policy.json`);
     }
 
     if (!coursePolicy.certificates) {
@@ -251,19 +265,19 @@ class OXL {
 
     const certs = coursePolicy.certificates.certificates;
 
+    const new_cert = {
+      course_title: coursePolicy.display_name || "",
+      description: "Course completion certificate",
+      editing: false,
+      id: Date.now(),
+      is_active: status,
+      name: "Certificate of Completion",
+      signatories: [],
+      version: 1,
+    };
+
     if (!Array.isArray(certs) || certs.length === 0) {
-      coursePolicy.certificates.certificates = [
-        {
-          course_title: coursePolicy.display_name || "",
-          description: "Course completion certificate",
-          editing: false,
-          id: Date.now(),
-          is_active: status,
-          name: "Certificate of Completion",
-          signatories: [],
-          version: 1,
-        },
-      ];
+      coursePolicy.certificates.certificates = [new_cert];
     } else {
       coursePolicy.certificates.certificates = certs.map((cert) => ({
         ...cert,
@@ -287,25 +301,15 @@ class OXL {
       let xmlCerts = [];
       try {
         xmlCerts = attrs.certificates
-          ? JSON.parse(attrs.certificates.replace(/&quot;/g, '"')).certificates || []
+          ? JSON.parse(attrs.certificates.replace(/&quot;/g, '"'))
+              .certificates || []
           : [];
       } catch {
         xmlCerts = [];
       }
 
       if (!Array.isArray(xmlCerts) || xmlCerts.length === 0) {
-        xmlCerts = [
-          {
-            course_title: coursePolicy.display_name || "",
-            description: "Course completion certificate",
-            editing: false,
-            id: Date.now(),
-            is_active: status,
-            name: "Certificate of Completion",
-            signatories: [],
-            version: 1,
-          },
-        ];
+        xmlCerts = [new_cert];
       } else {
         xmlCerts = xmlCerts.map((cert) => ({
           ...cert,
@@ -315,6 +319,60 @@ class OXL {
 
       const certObj = { certificates: xmlCerts };
       attrs.certificates = JSON.stringify(certObj).replace(/"/g, "&quot;");
+    }
+
+    this._writePolicyJson(policyJson);
+    this._writePolicyXml(policyXml);
+  }
+
+  addSignatoryToCertificate({ name, title, organization, signature }) {
+    const policyJson = this._readPolicyJson();
+    const policyXml = this._readPolicyXml();
+    const courseKey = `course/${this.courseXml.url_name}`;
+    const coursePolicy = policyJson[courseKey];
+
+    if (
+      !coursePolicy.certificates ||
+      !Array.isArray(coursePolicy.certificates.certificates) ||
+      coursePolicy.certificates.certificates.length === 0
+    ) {
+      return;
+    }
+
+    const assetName = this.addStaticAsset(signature);
+    const signaturePath = `/asset-v1:${this.organization}+${this.code}+${this.run}+type@asset+block@${assetName}`;
+
+    const newSignatory = {
+      certificate: null,
+      id: Date.now(),
+      name,
+      organization: organization || "",
+      signature_image_path: signaturePath,
+      title: title || "",
+    };
+
+    coursePolicy.certificates.certificates.forEach((cert) => {
+      cert.signatories = [newSignatory];
+    });
+
+    const xmlCourse = policyXml?.elements?.[0];
+    if (xmlCourse?.attributes?.certificates) {
+      try {
+        const certObj = JSON.parse(
+          xmlCourse.attributes.certificates.replace(/&quot;/g, '"')
+        );
+
+        certObj.certificates.forEach((cert) => {
+          cert.signatories = [newSignatory];
+        });
+
+        xmlCourse.attributes.certificates = JSON.stringify(certObj).replace(
+          /"/g,
+          "&quot;"
+        );
+      } catch (err) {
+        throw new Error(`Failed to parse certificates XML: ${err}`);
+      }
     }
 
     this._writePolicyJson(policyJson);

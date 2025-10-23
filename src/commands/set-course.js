@@ -28,13 +28,31 @@ class SetCourseCommand extends Command {
     );
     Object.assign(this.oxl, flags);
     if (flags.lti) this.oxl.enableLti();
-    this.oxl.toggleCertificate(flags.certificate);
     if (flags.policyXml) {
       this.oxl._writePolicyXml(flags.policyXml, true);
     }
     if (flags.startDate) {
       this.oxl.setStartDate(flags.startDate);
     }
+    if (flags.certificate !== undefined)
+      this.oxl.toggleCertificate(flags.certificate);
+    if (flags.addSignatory && flags.addSignatory.length > 0) {
+      const parsedSignatories = flags.addSignatory.map((entry) => {
+        const obj = {};
+        entry.split(",").forEach((pair) => {
+          const [key, value] = pair
+            .split("=")
+            .map((x) => x.trim().replace(/^"|"$/g, ""));
+          obj[key] = value;
+        });
+        return obj;
+      });
+
+      for (const signatory of parsedSignatories) {
+        this.oxl.addSignatoryToCertificate(signatory);
+      }
+    }
+
     this.oxl.save(flags.out);
     this.oxl.cleanup();
   }
@@ -105,6 +123,11 @@ SetCourseCommand.flags = {
   certificate: flags.boolean({
     description: "enable certificate",
     allowNo: true,
+  }),
+  addSignatory: flags.string({
+    description:
+      'Add a certificate signatory (format: name="X",title="Y",organization="Z",signature="/path/to/file.png")',
+    multiple: true,
   }),
 };
 
