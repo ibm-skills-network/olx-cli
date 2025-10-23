@@ -27,13 +27,30 @@ class SetCourseCommand extends Command {
         .join(", ")}`
     );
     Object.assign(this.oxl, flags);
-    if (flags.lti) this.oxl.enablLti();
+    if (flags.lti) this.oxl.enableLti();
     if (flags.policyXml) {
       this.oxl._writePolicyXml(flags.policyXml, true);
     }
     if (flags.startDate) {
       this.oxl.setStartDate(flags.startDate);
     }
+    if (flags.certificate !== undefined)
+      this.oxl.toggleCertificate(flags.certificate);
+    if (flags.addSignatory && flags.addSignatory.length > 0) {
+      const parsedSignatories = flags.addSignatory.map((entry) => {
+        const obj = {};
+        entry.split(",").forEach((pair) => {
+          const [key, value] = pair
+            .split("=")
+            .map((x) => x.trim().replace(/^"|"$/g, ""));
+          obj[key] = value;
+        });
+        return obj;
+      });
+
+      this.oxl.addSignatoryToCertificate(parsedSignatories);
+    }
+
     this.oxl.save(flags.out);
     this.oxl.cleanup();
   }
@@ -86,7 +103,9 @@ SetCourseCommand.flags = {
   overview: flags.string({ description: "course overview" }),
   shortDescription: flags.string({ description: "course short description" }),
   startDate: flags.string({ description: "course start date" }),
-  minPassingGrade: flags.string({ description: "minimum passing grade as an integer" }),
+  minPassingGrade: flags.string({
+    description: "minimum passing grade as an integer",
+  }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),
   ltiPassport: flags.string({
     description:
@@ -98,6 +117,15 @@ SetCourseCommand.flags = {
   }),
   courseCard: flags.string({
     description: "path or url to course card image file. PNG, JPG.",
+  }),
+  certificate: flags.boolean({
+    description: "enable certificate",
+    allowNo: true,
+  }),
+  addSignatory: flags.string({
+    description:
+      'Add a certificate signatory (format: name="X",title="Y",organization="Z",signature="/path/to/file.png")',
+    multiple: true,
   }),
 };
 
