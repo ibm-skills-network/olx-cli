@@ -110,7 +110,7 @@ OPTIONS
 DESCRIPTION
   Update course attributes of an existing course archive.
 
-EXAMPLE
+EXAMPLES
   $ oxl-cli set-course archive.gz --name "New Course Name"
 ```
 
