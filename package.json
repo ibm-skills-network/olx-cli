@@ -62,7 +62,7 @@
     "lint": "prettier --check \"src/**/*.js\" \"*.md\" \"package.json\" \".github/**/*.yml\"",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest",
-    "test": "echo NO TESTS",
+    "test": "node --test --experimental-test-coverage test/**/*.test.js",
     "version": "oclif-dev readme && prettier --write README.md && git add README.md"
   }
 }
