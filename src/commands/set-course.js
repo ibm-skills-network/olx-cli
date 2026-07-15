@@ -50,8 +50,8 @@ class SetCourseCommand extends Command {
 
       this.oxl.addSignatoryToCertificate(parsedSignatories);
     }
-    if (flags.minCount && flags.minCount.length > 0) {
-      const parsedMinCounts = flags.minCount.map((entry) => {
+    if (flags.graderMinCount && flags.graderMinCount.length > 0) {
+      const parsedMinCounts = flags.graderMinCount.map((entry) => {
         const obj = {};
         entry.split(",").forEach((pair) => {
           const [key, value] = pair
@@ -109,7 +109,7 @@ Update course attributes of an existing course archive.
 
 SetCourseCommand.examples = [
   '$ oxl-cli set-course archive.gz --name "New Course Name"',
-  '$ olx-cli set-course archive.gz --minCount="value=1,grader=0"',
+  '$ olx-cli set-course archive.gz --graderMinCount="value=1,grader=0"',
 ];
 
 SetCourseCommand.flags = {
@@ -121,9 +121,9 @@ SetCourseCommand.flags = {
   minPassingGrade: flags.string({
     description: "minimum passing grade as an integer",
   }),
-  minCount: flags.string({
+  graderMinCount: flags.string({
     description:
-      'set min_count on a GRADER entry (format: value=<non-negative integer>,grader=<0-based index>). grader defaults to 0. Repeatable to target multiple graders, e.g. --minCount="value=3,grader=0"',
+      'set min_count on a GRADER entry (format: value=<non-negative integer>,grader=<0-based index>). grader defaults to 0. Repeatable to target multiple graders, e.g. --graderMinCount="value=3,grader=0"',
     multiple: true,
   }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),

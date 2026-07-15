@@ -207,7 +207,8 @@ class OXL {
 
   /**
    * Set `min_count` on one or more GRADER entries in grading_policy.json.
-   *
+   * https://docs.openedx.org/en/latest/educators/olx/policies/grading.html
+   * 
    * @param {Array<{value: string|number, grader?: string|number}>} entries -
    *   Each entry sets `min_count` (`value`, a non-negative integer) on the
    *   GRADER at the 0-based index `grader` (defaults to 0).
@@ -231,7 +232,7 @@ class OXL {
     entries.forEach(({ value, grader }) => {
       const count = Number(value);
       if (!Number.isInteger(count) || count < 0) {
-        throw new Error("minCount value must be a non-negative integer");
+        throw new Error("graderMinCount value must be a non-negative integer");
       }
 
       const index = grader === undefined ? 0 : Number(grader);
@@ -241,7 +242,7 @@ class OXL {
         index >= gradingPolicyJson.GRADER.length
       ) {
         throw new Error(
-          `minCount grader index "${grader}" is out of range (0-${
+          `graderMinCount grader index "${grader}" is out of range (0-${
             gradingPolicyJson.GRADER.length - 1
           })`
         );

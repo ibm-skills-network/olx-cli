@@ -114,14 +114,14 @@ OPTIONS
 
   --addSignatory='name={},title={},organization={},signature={}' add signatories to certificate (can add multiple)
 
-  --minCount='value={},grader={}'      set min_count on the GRADER entry at the 0-based index grader (can add multiple)
+  --graderMinCount='value={},grader={}' set min_count on the GRADER entry at the 0-based index grader (can add multiple)
 
 DESCRIPTION
   Update course attributes of an existing course archive.
 
 EXAMPLES
   $ oxl-cli set-course archive.gz --name "New Course Name"
-  $ olx-cli set-course archive.gz --minCount="value=3,grader=0" --minCount="value=7,grader=1"
+  $ olx-cli set-course archive.gz --graderMinCount="value=3,grader=0" --graderMinCount="value=7,grader=1"
 ```
 
 _See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.17/src/commands/set-course.js)_
