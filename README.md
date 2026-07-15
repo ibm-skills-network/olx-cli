@@ -1,5 +1,4 @@
-olx-cli
-=======
+# olx-cli
 
 A command line tool for modifying attributes and content of Open Learning XML (OLX)
 
@@ -9,11 +8,15 @@ A command line tool for modifying attributes and content of Open Learning XML (O
 [![License](https://img.shields.io/npm/l/@ibm-skills-network/olx-cli.svg)](https://github.com/ibm-skills-network/olx-cli/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @ibm-skills-network/olx-cli
 $ olx-cli COMMAND
@@ -25,9 +28,13 @@ USAGE
   $ olx-cli COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
+
 - [olx-cli](#olx-cli)
 - [Usage](#usage)
 - [Commands](#commands)
@@ -107,12 +114,16 @@ OPTIONS
 
   --addSignatory='name={},title={},organization={},signature={}' add signatories to certificate (can add multiple)
 
+  --graderMinCount='value={},grader={}' set min_count on the GRADER entry at the 0-based index grader (can add multiple)
+
 DESCRIPTION
   Update course attributes of an existing course archive.
 
-EXAMPLE
+EXAMPLES
   $ oxl-cli set-course archive.gz --name "New Course Name"
+  $ olx-cli set-course archive.gz --graderMinCount="value=3,grader=0" --graderMinCount="value=7,grader=1"
 ```
 
 _See code: [src/commands/set-course.js](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.17/src/commands/set-course.js)_
+
 <!-- commandsstop -->
