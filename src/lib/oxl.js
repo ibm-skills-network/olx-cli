@@ -205,6 +205,54 @@ class OXL {
     fs.writeFileSync(filePath, JSON.stringify(gradingPolicyJson, null, 4));
   }
 
+  /**
+   * Set `min_count` on one or more GRADER entries in grading_policy.json.
+   *
+   * @param {Array<{value: string|number, grader?: string|number}>} entries -
+   *   Each entry sets `min_count` (`value`, a non-negative integer) on the
+   *   GRADER at the 0-based index `grader` (defaults to 0).
+   */
+  setMinCount(entries) {
+    const filePath = path.join(
+      this.extracedContentRoot,
+      "policies",
+      this.courseXml.url_name,
+      "grading_policy.json"
+    );
+
+    const gradingPolicyJson = JSON.parse(fs.readFileSync(filePath));
+    if (
+      !Array.isArray(gradingPolicyJson.GRADER) ||
+      gradingPolicyJson.GRADER.length === 0
+    ) {
+      throw new Error("grading_policy.json has no GRADER entries to update");
+    }
+
+    entries.forEach(({ value, grader }) => {
+      const count = Number(value);
+      if (!Number.isInteger(count) || count < 0) {
+        throw new Error("minCount value must be a non-negative integer");
+      }
+
+      const index = grader === undefined ? 0 : Number(grader);
+      if (
+        !Number.isInteger(index) ||
+        index < 0 ||
+        index >= gradingPolicyJson.GRADER.length
+      ) {
+        throw new Error(
+          `minCount grader index "${grader}" is out of range (0-${
+            gradingPolicyJson.GRADER.length - 1
+          })`
+        );
+      }
+
+      gradingPolicyJson.GRADER[index].min_count = count;
+    });
+
+    fs.writeFileSync(filePath, JSON.stringify(gradingPolicyJson, null, 4));
+  }
+
   set overview(value) {
     const overviewHtmlPath = path.join(
       this.extracedContentRoot,
