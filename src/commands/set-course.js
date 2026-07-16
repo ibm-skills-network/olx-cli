@@ -8,7 +8,6 @@ const pipeline = promisify(stream.pipeline);
 
 const { Command, flags } = require("@oclif/command");
 const got = require("got");
-const FileType = require("file-type");
 
 const { OXL } = require("../lib/oxl");
 
@@ -83,14 +82,15 @@ async function downloadRemoteCourseCard(url) {
     crypto.randomBytes(64).toString("hex").slice(0, 24)
   );
   fs.mkdirSync(tmpDir, { recursive: true });
+  const { fileTypeStream } = await import("file-type");
   const downloadStream = got.stream(url).pipe(new PassThrough());
-  const fileTypeStream = await FileType.stream(downloadStream);
+  const typedStream = await fileTypeStream(downloadStream);
   const destPath = path.join(
     tmpDir,
-    `course_card.${fileTypeStream.fileType.ext}`
+    `course_card.${typedStream.fileType.ext}`
   );
   const writeStream = fs.createWriteStream(destPath);
-  await pipeline(fileTypeStream, writeStream);
+  await pipeline(typedStream, writeStream);
   return destPath;
 }
 
