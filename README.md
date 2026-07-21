@@ -8,9 +8,10 @@ A command line tool for modifying attributes and content of Open Learning XML (O
 [![License](https://img.shields.io/npm/l/@ibm-skills-network/olx-cli.svg)](https://github.com/ibm-skills-network/olx-cli/blob/master/package.json)
 
 <!-- toc -->
-* [olx-cli](#olx-cli)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [olx-cli](#olx-cli)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
@@ -34,9 +35,10 @@ USAGE
 # Commands
 
 <!-- commands -->
-* [`olx-cli help [COMMAND]`](#olx-cli-help-command)
-* [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
-* [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
+
+- [`olx-cli help [COMMAND]`](#olx-cli-help-command)
+- [`olx-cli list-labs COURSEARCHIVEPATH`](#olx-cli-list-labs-coursearchivepath)
+- [`olx-cli set-course COURSEARCHIVEPATH`](#olx-cli-set-course-coursearchivepath)
 
 ## `olx-cli help [COMMAND]`
 
@@ -123,4 +125,5 @@ EXAMPLES
 ```
 
 _See code: [src/commands/set-course.ts](https://github.com/ibm-skills-network/olx-cli/blob/v0.1.19/src/commands/set-course.ts)_
+
 <!-- commandsstop -->
