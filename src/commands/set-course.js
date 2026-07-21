@@ -8,7 +8,6 @@ const pipeline = promisify(stream.pipeline);
 
 const { Command, flags } = require("@oclif/command");
 const got = require("got");
-const FileType = require("file-type");
 
 const { OXL } = require("../lib/oxl");
 
@@ -50,6 +49,20 @@ class SetCourseCommand extends Command {
 
       this.oxl.addSignatoryToCertificate(parsedSignatories);
     }
+    if (flags.graderMinCount && flags.graderMinCount.length > 0) {
+      const parsedMinCounts = flags.graderMinCount.map((entry) => {
+        const obj = {};
+        entry.split(",").forEach((pair) => {
+          const [key, value] = pair
+            .split("=")
+            .map((x) => x.trim().replace(/^"|"$/g, ""));
+          obj[key] = value;
+        });
+        return obj;
+      });
+
+      this.oxl.setMinCount(parsedMinCounts);
+    }
 
     this.oxl.save(flags.out);
     this.oxl.cleanup();
@@ -69,14 +82,15 @@ async function downloadRemoteCourseCard(url) {
     crypto.randomBytes(64).toString("hex").slice(0, 24)
   );
   fs.mkdirSync(tmpDir, { recursive: true });
+  const { fileTypeStream } = await import("file-type");
   const downloadStream = got.stream(url).pipe(new PassThrough());
-  const fileTypeStream = await FileType.stream(downloadStream);
+  const typedStream = await fileTypeStream(downloadStream);
   const destPath = path.join(
     tmpDir,
-    `course_card.${fileTypeStream.fileType.ext}`
+    `course_card.${typedStream.fileType.ext}`
   );
   const writeStream = fs.createWriteStream(destPath);
-  await pipeline(fileTypeStream, writeStream);
+  await pipeline(typedStream, writeStream);
   return destPath;
 }
 
@@ -95,6 +109,7 @@ Update course attributes of an existing course archive.
 
 SetCourseCommand.examples = [
   '$ oxl-cli set-course archive.gz --name "New Course Name"',
+  '$ olx-cli set-course archive.gz --graderMinCount="value=1,grader=0"',
 ];
 
 SetCourseCommand.flags = {
@@ -105,6 +120,11 @@ SetCourseCommand.flags = {
   startDate: flags.string({ description: "course start date" }),
   minPassingGrade: flags.string({
     description: "minimum passing grade as an integer",
+  }),
+  graderMinCount: flags.string({
+    description:
+      'set min_count on a GRADER entry (format: value=<non-negative integer>,grader=<0-based index>). grader defaults to 0. Repeatable to target multiple graders, e.g. --graderMinCount="value=3,grader=0"',
+    multiple: true,
   }),
   lti: flags.boolean({ description: "enable lti_consumer module" }),
   ltiPassport: flags.string({
