@@ -29,11 +29,8 @@ ListLabsCommand.args = [
 
 ListLabsCommand.description = `Returns a list of all labs used in the course along with their tool types`;
 
-ListLabsCommand.examples = [
-  '$ oxl-cli list-labs archive.gz',
-];
+ListLabsCommand.examples = ["$ oxl-cli list-labs archive.gz"];
 
-ListLabsCommand.flags = {
-};
+ListLabsCommand.flags = {};
 
 module.exports = ListLabsCommand;

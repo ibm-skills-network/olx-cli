@@ -31,7 +31,7 @@
     "lodash": "^4.18.1"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "/bin",
@@ -53,10 +53,16 @@
     ]
   },
   "repository": "ibm-skills-network/olx-cli",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
+    "build": "oclif-dev manifest && rm -f oclif.manifest.json",
+    "format": "prettier --write \"src/**/*.js\" \"*.md\" \"package.json\" \".github/**/*.yml\"",
+    "lint": "prettier --check \"src/**/*.js\" \"*.md\" \"package.json\" \".github/**/*.yml\"",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif-dev manifest",
-    "test": "echo NO TESTS",
-    "version": "oclif-dev readme && git add README.md"
+    "test": "node --test --experimental-test-coverage test/**/*.test.js",
+    "version": "oclif-dev readme && prettier --write README.md && git add README.md"
   }
 }
