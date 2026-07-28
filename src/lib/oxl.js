@@ -208,7 +208,7 @@ class OXL {
   /**
    * Set `min_count` on one or more GRADER entries in grading_policy.json.
    * https://docs.openedx.org/en/latest/educators/olx/policies/grading.html
-   * 
+   *
    * @param {Array<{value: string|number, grader?: string|number}>} entries -
    *   Each entry sets `min_count` (`value`, a non-negative integer) on the
    *   GRADER at the 0-based index `grader` (defaults to 0).

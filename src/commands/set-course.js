@@ -85,10 +85,7 @@ async function downloadRemoteCourseCard(url) {
   const { fileTypeStream } = await import("file-type");
   const downloadStream = got.stream(url).pipe(new PassThrough());
   const typedStream = await fileTypeStream(downloadStream);
-  const destPath = path.join(
-    tmpDir,
-    `course_card.${typedStream.fileType.ext}`
-  );
+  const destPath = path.join(tmpDir, `course_card.${typedStream.fileType.ext}`);
   const writeStream = fs.createWriteStream(destPath);
   await pipeline(typedStream, writeStream);
   return destPath;
