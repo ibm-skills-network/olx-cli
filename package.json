@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "husky": "^9.1.7",
     "oclif": "^4.23.29",
     "prettier": "^2.2.1",
     "typescript": "^5.3"
@@ -62,6 +63,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "oclif manifest",
     "test": "node --test --experimental-test-coverage test/**/*.test.js",
-    "version": "oclif readme && prettier --write README.md && git add README.md"
+    "version": "oclif readme && prettier --write README.md && git add README.md",
+    "prepare": "husky"
   }
 }
