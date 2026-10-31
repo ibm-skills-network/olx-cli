@@ -15,7 +15,7 @@
     "@oclif/plugin-help": "^6.0.0",
     "cheerio": "^1.0.0-rc.12",
     "file-type": "^21.0.0",
-    "glob": "^13.0.6",
+    "glob": "^14.0.0",
     "got": "^11.8.3",
     "mime-types": "^2.1.31",
     "tar": "^7.0.0"
